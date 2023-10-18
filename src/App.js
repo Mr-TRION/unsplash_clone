@@ -26,14 +26,6 @@ function App() {
     // console.log(search);
   }
 
-  const handleSubmit = async () => {
-
-    const res = await axios.get(`https://api.unsplash.com/search/photos/?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&query=${search}&per_page=250&orientation=squarish`);
-
-    // console.log(res.data.results);
-    setResults(res.data.results);
-  }
-
   const handleEnterSearch = async e => {
     if(e.key === 'Enter') {
       const res = await axios.get(`https://api.unsplash.com/search/photos/?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&query=${search}&per_page=250&orientation=squarish`);
@@ -44,16 +36,16 @@ function App() {
       setFound(res.data.results.length);
       setSearchText('');
     } 
-    // else {
-    //   const res = await axios.get(`https://api.unsplash.com/search/photos/?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&query=${search}&per_page=250&orientation=squarish`);
+    else {
+      const res = await axios.get(`https://api.unsplash.com/search/photos/?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&query=${search}&per_page=250&orientation=squarish`);
 
-    //   console.log(res.data.results);
-    //   console.log(search);
-    //   setTag(search);
-    //   setResults(res.data.results);
-    //   setFound(res.data.results.length);
+      console.log(res.data.results);
+      console.log(search);
+      setTag(search);
+      setResults(res.data.results);
+      setFound(res.data.results.length);
       
-    // }
+    }
   }
 
   
@@ -91,9 +83,9 @@ function App() {
             type='text' 
             className='input' 
             placeholder='Search Images here...' 
-            value={search} 
             onChange={handleSearchChange}
             onKeyPress={handleEnterSearch}
+            value={search} 
           />
           {/* <button onClick={handleSubmit}>Search</button> */}
         </div>
