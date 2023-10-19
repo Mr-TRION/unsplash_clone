@@ -9,13 +9,15 @@ function App() {
   const [search, setSearchText] = useState('');
   const [results, setResults] = useState([]);
 
-  const [itemData, setItemData] = useState('');
-  const [tag, setTag] = useState('');
-  const [name, setName] = useState('');
-  const [social, setSocial] = useState('');
+  // setting up modal details hooks
+  const [img, setImg] = useState('');
+  const [searchName, setsearchName] = useState('');
+  const [userName, setuserName] = useState('');
+  const [instagram, setInstagram] = useState('');
   const [views, setViews] = useState(0);
   const [like, setLike] = useState('');
   const [found, setFound] = useState(0);
+  
 
   // Modal hooks
   const [lgShow, setLgShow] = useState(false);
@@ -32,7 +34,7 @@ function App() {
       const res = await axios.get(`https://api.unsplash.com/search/photos/?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&query=${search}&per_page=250&orientation=squarish`);
 
       console.log(res.data.results);
-      setTag(search);
+      setsearchName(search);
       setResults(res.data.results);
       setFound(res.data.results.length);
       setSearchText('');
@@ -40,19 +42,19 @@ function App() {
   }
 
   
-  let link = `https://www.instagram.com/${social}`;
+  let link = `https://www.instagram.com/${instagram}`;
 
 
   // Handling single photo details
-  const handleClick = async (itemId) => {
+  const modalClick = async (itemId) => {
 
     const res = await axios.get(`https://api.unsplash.com/photos/${itemId}?client_id=nG0xH-j9GhYVY6fCqQ724b8DiKY4jT4N4QPH5YQX1XA&`);
 
     // console.log(res.data);
-    setItemData(res.data.urls.regular);
-    setName(res.data.user.name);
+    setImg(res.data.urls.regular);
+    setuserName(res.data.user.name);
     setLike(res.data.likes);
-    setSocial(res.data.user.instagram_username);
+    setInstagram(res.data.user.instagram_username);
     setViews(res.data.views)
     setLgShow(true);            
   }
@@ -61,7 +63,7 @@ function App() {
   if(found == 0) {
     msg = "No Results";
   } else {
-    msg = `Results found for ${tag}`;
+    msg = `Results found for ${searchName}`;
   }
   
 
@@ -81,7 +83,7 @@ function App() {
         <div className="data">
           {
             results.map((item) => {
-              return  <img key={item.id} src={item.urls.regular} onClick={() => handleClick(item.id)}/>
+              return  <img key={item.id} src={item.urls.regular} onClick={() => modalClick(item.id)}/>
             })
           }
         </div>
@@ -95,16 +97,17 @@ function App() {
         >
           <Modal.Header closeButton>
             <Modal.Title id="example-modal-sizes-title-lg">
-              {tag}
+              {searchName}
             </Modal.Title>
           </Modal.Header>
+          
           <Modal.Body>
-          <img src={itemData}/>
-          <p><i className="bi bi-hand-thumbs-up-fill"></i> {like}</p>
-            <p>Uploaded by <i>{name}</i></p>
-            <p><i className="bi bi-eye-fill"></i> Total {views} views</p>  
-            <a href={link} target='_blank' ><i className="bi bi-instagram"></i> {social}</a>
-            
+            <img src={img}/>
+            <p><i className="bi bi-hand-thumbs-up-fill"></i> {like}</p>
+              <p>Uploaded by <i>{userName}</i></p>
+              <p><i className="bi bi-eye-fill"></i> Total {views} views</p>  
+              <a href={link} target='_blank' ><i className="bi bi-instagram"></i> {instagram}</a>
+              
           </Modal.Body>
         </Modal>
 
